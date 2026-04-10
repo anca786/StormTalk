@@ -99,6 +99,76 @@ export function buildWeatherAdvisorFallback(context: WeatherContext): string {
   ].join("\n");
 }
 
+// ═══════════════════════════════════════════
+// AGENT 2: Vacation Finder
+// ═══════════════════════════════════════════
+
+export type VacationPreferences = {
+  description: string;
+  startDate?: string;
+  endDate?: string;
+};
+
+export type SuggestedDestination = {
+  city: string;
+  country: string;
+  latitude: number;
+  longitude: number;
+  reason: string;
+};
+
+export function buildVacationFinderPrompt(preferences: VacationPreferences) {
+  const dateInfo = preferences.startDate && preferences.endDate
+    ? `Perioada: ${preferences.startDate} - ${preferences.endDate}`
+    : "Perioada: flexibila";
+
+  return `
+Esti Vacation Finder-ul din aplicatia StormTalk - un agent AI care sugereaza destinatii de vacanta bazat pe preferintele meteo ale utilizatorului.
+
+Preferintele utilizatorului: "${preferences.description}"
+${dateInfo}
+
+Sarcina ta: Sugereaza EXACT 4 destinatii de vacanta care se potrivesc cu preferintele.
+
+Raspunde STRICT in format JSON, fara markdown, fara text suplimentar. Exact acest format:
+[
+  {"city": "Numele orasului", "country": "Tara", "latitude": 12.34, "longitude": 56.78, "reason": "Explicatie scurta in romana de ce se potriveste (max 30 cuvinte)"},
+  ...
+]
+
+Reguli:
+- Coordonatele trebuie sa fie REALE si PRECISE
+- Alege orase din tari diferite daca e posibil
+- Motivul trebuie sa fie legat de preferintele utilizatorului
+- Raspunde DOAR cu JSON-ul, nimic altceva
+`.trim();
+}
+
+export function buildVacationSummaryPrompt(
+  destination: SuggestedDestination,
+  forecast: { date: string; tempMax: number; tempMin: number; precipitation: number; weatherCode: number }[],
+) {
+  const forecastText = forecast
+    .map((d) => `${d.date}: max ${d.tempMax}°C, min ${d.tempMin}°C, precipitatii ${d.precipitation}mm, cod_meteo: ${d.weatherCode}`)
+    .join("\n");
+
+  return `
+Esti un ghid turistic prietenos din aplicatia StormTalk.
+Raspunzi doar in romana, concis si util.
+
+Destinatia: ${destination.city}, ${destination.country}
+Motiv recomandat: ${destination.reason}
+
+Prognoza meteo reala pentru aceasta destinatie:
+${forecastText}
+
+Scrie un paragraf scurt (max 80 cuvinte) care:
+1. Descrie cum va fi vremea in aceasta perioada
+2. Recomanda ce haine sa impacheteze
+3. Sugereaza 1-2 activitati ideale pentru destinatie
+Foloseste emoji-uri usor.
+`.trim();
+}
 
 // ═══════════════════════════════════════════
 // MULTI-PROVIDER AI (Gemini -> Groq Fallback)
@@ -176,4 +246,12 @@ export async function generateIntelligentReply(prompt: string): Promise<{ text: 
     console.warn("Groq a esuat si el.", error instanceof Error ? error.message : error);
     throw new Error("Toti providerii AI sunt offline sau limitele au fost atinse.");
   }
+}
 
+// Legacy exports for backward compatibility
+export const buildMeteorologistPrompt = buildWeatherAdvisorPrompt;
+export const buildLocalPrompt = buildWeatherAdvisorPrompt;
+export type DebateAgentReply = AgentReply;
+export function buildFallbackDebate(context: WeatherContext): AgentReply[] {
+  return [{ role: "advisor", message: buildWeatherAdvisorFallback(context) }];
+}
