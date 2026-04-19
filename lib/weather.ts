@@ -17,3 +17,9 @@ export function normalizeWeatherUnits(
     Object.entries(units).map(([key, value]) => [key, normalizeWeatherUnit(value)]),
   );
 }
+
+export function formatMetricSafe(value: string | number | null | undefined, unit?: string) {
+  if (value === null || value === undefined) return 'N/A';
+  const safeUnit = unit ? normalizeWeatherUnit(unit) : '';
+  return `${value}${safeUnit ? ` ${safeUnit}` : ''}`;
+}
