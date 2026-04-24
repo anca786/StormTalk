@@ -50,4 +50,3 @@ This agent processes natural language descriptions of a user's dream vacation.
 - **APIs:** Open-Meteo API, Gemini API, Groq Cloud API
 - **Deployment & CI:** GitHub Actions (for automated lint/tests) & Vercel (Production Hosting)
 
-*Academic Project - Software Engineering Course.*
