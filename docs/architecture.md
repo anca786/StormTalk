@@ -12,12 +12,12 @@
 - User Profile Preferences
 
 ### Backend API Routes
-- GET /api/weather (Open-Meteo Integration)
-- GET /api/geocode (Search Integration)
-- POST /api/debate (Weather Advisor Agent)
-- POST /api/vacation (Vacation Finder Agent)
-- GET/POST /api/favorites (Supabase CRUD)
-- GET/POST /api/history (Supabase CRUD)
+- `GET /api/weather` (Open-Meteo Integration)
+- `GET /api/geocode` (Search Integration)
+- `POST /api/debate` (Weather Advisor Agent)
+- `POST /api/vacation` (Vacation Finder Agent)
+- `GET/POST /api/favorites` (Supabase CRUD)
+- `GET/POST /api/history` (Supabase CRUD)
 
 ### External Integrations
 - **Open-Meteo API:** Raw weather parameters, completely free and reliable point data.
@@ -39,7 +39,7 @@
 
 ### 1. Unified Component & Flow Diagram (Architecture)
 
-\\\mermaid
+```mermaid
 graph TD
     Client[Web Browser Client] -->|HTTP Request| API[Next.js API Routes]
     Client -->|Auth Flow| SupaClient[Supabase Client]
@@ -59,11 +59,11 @@ graph TD
         LLM --> Agent1(Weather Advisor)
         LLM --> Agent2(Vacation Finder)
     end
-\\\
+```
 
 ### 2. User Use Case Diagram
 
-\\\mermaid
+```mermaid
 flowchart LR
     A((User))
     B((AI Agents))
@@ -82,24 +82,24 @@ flowchart LR
     A --> UC4
     A --> UC5
     
-    UC2 <-- Generates Advice --- B
-    UC3 <-- Analyzes Match --- B
-\\\
+    B -- Generates Advice --> UC2
+    B -- Analyzes Match --> UC3
+```
 
 ## Data Persistence (Relations)
 
-### \profiles\
+### `profiles`
 - user_id (FK -> Auth)
 - preferred_unit
 
-### \avorites\
+### `favorites`
 - id
 - user_id
 - latitude, longitude
 - label
 - created_at
 
-### \history\
+### `history`
 - id
 - user_id
 - latitude, longitude
