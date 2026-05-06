@@ -11,7 +11,7 @@
 
 - integrare Open-Meteo
 - API route pentru weather
-- orchestration pentru cei doi agenti AI
+- implementare Weather Advisor si Vacation Finder
 - evaluari pentru raspunsurile agentilor
 
 ## Tanasoiu Maria Alexia

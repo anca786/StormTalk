@@ -7,7 +7,7 @@ import StorageListener from "@/components/storage/storage-listener";
 export const metadata: Metadata = {
   title: "StormTalk",
   description:
-    "Aplicatie web care combina date meteo in timp real cu doi agenti AI care dezbat conditiile pentru orice coordonate.",
+    "Aplicatie web care combina date meteo in timp real cu doi agenti AI pentru recomandari meteo si destinatii de vacanta.",
 };
 
 const interFontUrl = "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap";

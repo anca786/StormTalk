@@ -14,7 +14,7 @@ export type StoredHistoryEntry = {
   weather: Record<string, string | number | null>;
   weatherUnits?: Record<string, string>;
   agents: {
-    role: "meteorolog" | "localnic";
+    role: "advisor" | "vacation";
     message: string;
   }[];
   createdAt: string;

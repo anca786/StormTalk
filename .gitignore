@@ -6,4 +6,5 @@ node_modules
 coverage
 dist
 *.log
+*.tsbuildinfo
 vercel

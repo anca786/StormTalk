@@ -95,7 +95,7 @@ export default function HistoryPage() {
                 {entry.agents.map((agent) => (
                   <article className="message-card" key={`${entry.id}-${agent.role}`}>
                     <span className="message-role">
-                      {agent.role === "meteorolog" ? "Meteorolog" : "Localnic"}
+                      {agent.role === "advisor" ? "Weather Advisor" : "Vacation Finder"}
                     </span>
                     <p>{agent.message}</p>
                   </article>
@@ -116,4 +116,3 @@ export default function HistoryPage() {
     </main>
   );
 }
-

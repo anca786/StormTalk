@@ -1,7 +1,8 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildLocalPrompt,
-  buildMeteorologistPrompt,
+  buildVacationFinderPrompt,
+  buildVacationSummaryPrompt,
+  buildWeatherAdvisorPrompt,
   type WeatherContext,
 } from "../lib/agents";
 
@@ -24,21 +25,42 @@ const weatherContext: WeatherContext = {
 };
 
 describe("agent prompts", () => {
-  it("builds the meteorologist prompt in romanian with weather values", () => {
-    const prompt = buildMeteorologistPrompt(weatherContext);
+  it("builds the weather advisor prompt in romanian with weather values", () => {
+    const prompt = buildWeatherAdvisorPrompt(weatherContext);
 
-    expect(prompt).toContain("Esti Meteorologul");
+    expect(prompt).toContain("Esti Weather Advisor-ul");
     expect(prompt).toContain("Raspunzi doar in limba romana");
     expect(prompt).toContain("temperature_2m: 18.4");
     expect(prompt).toContain("wind_speed_10m: 16.7");
   });
 
-  it("builds the local prompt in romanian with practical guidance context", () => {
-    const prompt = buildLocalPrompt(weatherContext);
+  it("builds the vacation finder prompt as strict JSON instruction", () => {
+    const prompt = buildVacationFinderPrompt({
+      description: "vreau o vacanta calda la plaja",
+      startDate: "2026-07-01",
+      endDate: "2026-07-07",
+    });
 
-    expect(prompt).toContain("Esti Localnicul");
-    expect(prompt).toContain("Vorbeste natural si practic");
-    expect(prompt).toContain("pressure_msl: 1015.2");
-    expect(prompt).toContain("Coordonate: 44.4268, 26.1025");
+    expect(prompt).toContain("Esti Vacation Finder-ul");
+    expect(prompt).toContain("Sugereaza EXACT 4 destinatii");
+    expect(prompt).toContain("Raspunde STRICT in format JSON");
+    expect(prompt).toContain("Perioada: 2026-07-01 - 2026-07-07");
+  });
+
+  it("builds the vacation summary prompt with real forecast context", () => {
+    const prompt = buildVacationSummaryPrompt(
+      {
+        city: "Barcelona",
+        country: "Spania",
+        latitude: 41.39,
+        longitude: 2.17,
+        reason: "Climat mediteranean potrivit pentru plaja.",
+      },
+      [{ date: "2026-07-01", tempMax: 29, tempMin: 21, precipitation: 0, weatherCode: 0 }],
+    );
+
+    expect(prompt).toContain("Esti un ghid turistic prietenos");
+    expect(prompt).toContain("Destinatia: Barcelona, Spania");
+    expect(prompt).toContain("2026-07-01: max 29");
   });
 });

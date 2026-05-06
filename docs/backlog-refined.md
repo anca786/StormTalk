@@ -5,8 +5,8 @@
 - configurare proiect Next.js si TypeScript
 - integrare Open-Meteo
 - pagina harta cu click pe coordonate
-- endpoint pentru debate AI
-- interfata chat cu doi agenti
+- endpoint pentru Weather Advisor
+- interfata pentru analiza meteo AI
 - autentificare cu Supabase
 - salvare favorite
 - salvare istoric
@@ -16,7 +16,7 @@
 - profil utilizator
 - toggle Celsius / Fahrenheit
 - cautare dupa oras
-- Smart Vacation Finder
+- Smart Vacation Finder cu agent AI dedicat
 
 ## Prioritate mica
 

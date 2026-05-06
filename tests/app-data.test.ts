@@ -63,14 +63,14 @@ describe("app data helpers", () => {
       latitude: 44.4,
       longitude: 26.1,
       weather: {},
-      agents: [{ role: "meteorolog", message: "Aceeasi analiza" }],
+      agents: [{ role: "advisor", message: "Aceeasi analiza" }],
     });
 
     const duplicate = appendHistoryEntry(history, {
       latitude: 44.4,
       longitude: 26.1,
       weather: {},
-      agents: [{ role: "meteorolog", message: "Aceeasi analiza" }],
+      agents: [{ role: "advisor", message: "Aceeasi analiza" }],
     });
 
     expect(duplicate).toHaveLength(1);

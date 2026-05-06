@@ -2,19 +2,19 @@
 
 ## Viziune
 
-StormTalk transforma datele meteo brute in explicatii accesibile si interactive prin colaborarea dintre doi agenti AI:
+StormTalk transforma datele meteo brute in explicatii accesibile si recomandari de calatorie prin doi agenti AI:
 
-- Meteorologul: analizeaza stiintific datele
-- Localnicul: interpreteaza impactul practic si uman
+- Weather Advisor: explica vremea curenta si recomanda actiuni practice
+- Vacation Finder: sugereaza destinatii pe baza preferintelor meteo si a prognozei
 
 ## Arhitectura propusa
 
 1. Utilizatorul selecteaza o locatie pe harta.
 2. Aplicatia cere vremea actuala din Open-Meteo pe baza coordonatelor.
 3. Serverul normalizeaza datele relevante.
-4. Cei doi agenti primesc acelasi context meteo, dar prompturi diferite.
-5. Raspunsurile sunt afisate sub forma de dezbatere.
-6. Conversatia poate fi salvata in istoric si legata de favorite.
+4. Weather Advisor primeste contextul meteo si genereaza analiza pentru harta.
+5. Vacation Finder primeste preferintele utilizatorului si genereaza destinatii.
+6. Analizele meteo pot fi salvate in istoric si legate de favorite.
 
 ## MVP
 

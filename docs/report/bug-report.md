@@ -2,11 +2,11 @@
 
 ## Titlu
 
-Exemplu: Dezbaterea AI nu se genereaza dupa selectarea unei locatii pe harta
+Exemplu: Analiza Weather Advisor nu se genereaza dupa selectarea unei locatii pe harta
 
 ## Descriere
 
-Dupa selectarea unei locatii valide, aplicatia afiseaza vremea, dar nu afiseaza raspunsurile celor doi agenti.
+Dupa selectarea unei locatii valide, aplicatia afiseaza vremea, dar nu afiseaza raspunsul agentului Weather Advisor.
 
 ## Pasi de reproducere
 
@@ -16,7 +16,7 @@ Dupa selectarea unei locatii valide, aplicatia afiseaza vremea, dar nu afiseaza 
 
 ## Rezultat asteptat
 
-Panoul ar trebui sa afiseze raspunsurile agentului Meteorolog si ale agentului Localnic.
+Panoul ar trebui sa afiseze analiza agentului Weather Advisor.
 
 ## Rezultat actual
 

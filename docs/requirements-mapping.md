@@ -9,9 +9,9 @@
 
 ### Minim 2 agenti AI inclusi in implementare
 
-- agentul `Meteorologul`
-- agentul `Localnicul`
-- logica de orchestrare in `app/api/debate/route.ts`
+- agentul `Weather Advisor`, implementat prin `app/api/debate/route.ts`
+- agentul `Vacation Finder`, implementat prin `app/api/vacation/route.ts`
+- prompturile si fallback-urile sunt in `lib/agents.ts`
 
 ### Demo offline
 

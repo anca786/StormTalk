@@ -157,8 +157,6 @@ export default function StormMapClient() {
   const [advisorMessage, setAdvisorMessage] = useState<string | null>(null);
   const [weatherError, setWeatherError] = useState<string | null>(null);
   const [advisorError, setAdvisorError] = useState<string | null>(null);
-  const [advisorMode, setAdvisorMode] = useState<"gemini" | "fallback" | null>(null);
-  const [advisorWarning, setAdvisorWarning] = useState<string | null>(null);
   const [preferredUnit, setPreferredUnit] = useState<"C" | "F">("C");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchResults, setSearchResults] = useState<GeocodeResult[]>([]);
@@ -275,8 +273,6 @@ export default function StormMapClient() {
       setIsWeatherLoading(true);
       setWeatherError(null);
       setAdvisorError(null);
-      setAdvisorMode(null);
-      setAdvisorWarning(null);
       setAdvisorMessage(null);
 
       try {
@@ -310,8 +306,6 @@ export default function StormMapClient() {
 
         if (!isCancelled) {
           setAdvisorMessage(advisorPayload.message ?? null);
-          setAdvisorMode(advisorPayload.mode ?? null);
-          setAdvisorWarning(advisorPayload.warning ?? null);
         }
       } catch (error) {
         const message =
@@ -424,8 +418,6 @@ export default function StormMapClient() {
     try {
       const payload = await fetchAdvisor(weather);
       setAdvisorMessage(payload.message ?? null);
-      setAdvisorMode(payload.mode ?? null);
-      setAdvisorWarning(payload.warning ?? null);
     } catch (error) {
       setAdvisorError(
         error instanceof Error

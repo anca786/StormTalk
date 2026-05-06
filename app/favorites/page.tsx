@@ -123,7 +123,7 @@ export default function FavoritesPage() {
             <h2>Nu exista favorite inca</h2>
             <p>
               Mergi pe pagina harta si salveaza o locatie dupa ce se incarca
-              vremea si raspunsurile celor doi agenti.
+              vremea si raspunsurile agentului Weather Advisor.
             </p>
           </article>
         )}
@@ -131,4 +131,3 @@ export default function FavoritesPage() {
     </main>
   );
 }
-

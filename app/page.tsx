@@ -1,7 +1,8 @@
 const features = [
   "Harta interactiva cu selectare prin coordonate",
   "Date meteo actuale prin Open-Meteo",
-  "Dezbatere AI intre Meteorolog si Localnic",
+  "Weather Advisor pentru recomandari meteo",
+  "Vacation Finder pentru destinatii potrivite",
   "Autentificare securizata, favorite si istoric",
 ];
 
@@ -13,7 +14,7 @@ export default function HomePage() {
         <h1>Vreme reala, explicata de doi agenti AI</h1>
         <p className="lead">
           Proiect academic care combina harta interactiva, date meteo live si o
-          dezbatere generata de doi agenti AI pentru orice locatie selectata.
+          analiza generata de doi agenti AI: unul pentru vreme si unul pentru vacante.
         </p>
 
         <div className="cta-row">
@@ -39,9 +40,9 @@ export default function HomePage() {
         <article className="info-card">
           <h2>Cei doi agenti</h2>
           <p>
-            Meteorologul explica stiintific valorile masurate, iar Localnicul
-            traduce vremea in impact practic, recomandari si observatii de zi
-            cu zi.
+            Weather Advisor explica datele meteo si recomanda actiuni practice,
+            iar Vacation Finder propune destinatii pe baza preferintelor meteo
+            ale utilizatorului.
           </p>
         </article>
       </section>
