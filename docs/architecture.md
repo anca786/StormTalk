@@ -9,26 +9,26 @@ Această diagramă ilustrează împărțirea logică a aplicației între interf
 ```mermaid
 graph TD
     %% Frontend Components
-    subgraph Frontend [Next.js Client Components]
-        Map[Harta Interactiva Leaflet]
-        Vacation[Smart Vacation Finder]
-        Profile[Profil & Autentificare]
-        History[Panou Istoric]
+    subgraph Frontend ["Next.js Client Components"]
+        Map["Harta Interactiva Leaflet"]
+        Vacation["Smart Vacation Finder"]
+        Profile["Profil & Autentificare"]
+        History["Panou Istoric"]
     end
 
     %% Backend API Routes
-    subgraph Backend [Next.js API Routes]
-        API_Weather[/api/weather/]
-        API_Debate[/api/debate/]
-        API_Vacation[/api/vacation/]
-        API_DB[/api/history & /api/favorites]
+    subgraph Backend ["Next.js API Routes"]
+        API_Weather["API Vreme (Weather)"]
+        API_Debate["API Agenti Vreme (Debate)"]
+        API_Vacation["API Agenti Vacanta (Vacation)"]
+        API_DB["API Baza de Date (DB)"]
     end
 
     %% External Services
-    subgraph External [Servicii Externe]
-        OpenMeteo((Open-Meteo API))
-        Gemini((Gemini / Groq AI))
-        Supabase[(Supabase PostgreSQL)]
+    subgraph External ["Servicii Externe"]
+        OpenMeteo(("Open-Meteo API"))
+        Gemini(("Gemini / Groq AI"))
+        Supabase[("Supabase PostgreSQL")]
     end
 
     %% Connections
@@ -46,32 +46,34 @@ graph TD
 
 ## 2. Fluxul de Execuție AI (Sequence Diagram)
 
-Diagrama de mai jos prezintă fluxul pas-cu-pas care se întâmplă atunci când un utilizator selectează un punct pe hartă: de la obținerea coordonatelor, extragerea datelor meteo, până la dezbaterea generată de agenții AI.
+Diagrama de mai jos prezintă fluxul pas-cu-pas care se întâmplă atunci când un utilizator selectează o locație pentru analiza vremii sau pentru planificarea vacanței:
 
 ```mermaid
 sequenceDiagram
     actor User
-    participant Client as Frontend (Map)
-    participant Weather as API /weather
-    participant AI as API /debate
+    participant Client as Frontend
+    participant API as Rute Backend
     participant ExtMeteo as Open-Meteo
     participant ExtLLM as Gemini/Groq
     participant DB as Supabase
 
-    User->>Client: Click pe coordonate (Lat, Lng)
-    Client->>Weather: GET /api/weather?lat=...&lng=...
-    Weather->>ExtMeteo: Fetch real-time weather
-    ExtMeteo-->>Weather: Return temperature, wind, etc.
-    Weather-->>Client: Date meteo brute
+    User->>Client: Selecteaza o cerere (Vreme / Vacanta)
     
-    Client->>AI: POST /api/debate (Weather Payload)
-    AI->>ExtLLM: Prompt complex (Agent 1 + Agent 2)
-    ExtLLM-->>AI: Răspuns dezbatere (Meteorolog vs Localnic)
-    AI-->>Client: Mesaj formatat
+    alt Este o cerere de Vreme pe Harta
+        Client->>API: GET Date Meteo (Coordonate)
+        API->>ExtMeteo: Fetch real-time weather
+        ExtMeteo-->>API: Parametri meteo bruti
+        API-->>Client: Returneaza date meteo
+    end
+    
+    Client->>API: Cere analiza AI (Debate / Vacation)
+    API->>ExtLLM: Trimite parametrii + Prompt Agent
+    ExtLLM-->>API: Răspuns inteligent (Fallback automat la Groq in caz de eroare)
+    API-->>Client: Mesaj formatat cu sugestii
 
-    Client-->>User: Afișare UI (Date + Chat AI)
+    Client-->>User: Afișare UI
     
-    Client->>DB: POST /api/history (Salvare conversație)
+    Client->>DB: Salvare automata in History
     DB-->>Client: Confirmare salvare
 ```
 
@@ -92,9 +94,9 @@ erDiagram
     }
 
     PROFILES {
-        uuid user_id PK, FK
+        uuid user_id PK
         string display_name
-        string preferred_unit "celsius/fahrenheit"
+        string preferred_unit
     }
 
     FAVORITES {
