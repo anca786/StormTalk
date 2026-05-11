@@ -1,6 +1,6 @@
 # StormTalk ⛈️
 
-StormTalk este o aplicatie web inovatoare care integreaza date meteorologice obtinute in timp real cu o arhitectura AI multi-agent. Aplicatia orchestreaza agenti virtuali care analizeaza parametrii climatici si genereaza contextual analize meteo pentru orice coordonate geografice selectate pe harta, alaturi de functionalitati de planificare a vacantelor in functie de clima.
+StormTalk este o aplicatie web care integreaza date meteorologice obtinute in timp real cu o arhitectura AI multi-agent. Aplicatia orchestreaza agenti virtuali care analizeaza parametrii climatici si genereaza contextual analize meteo pentru orice coordonate geografice selectate pe harta, alaturi de functionalitati de planificare a vacantelor in functie de clima.
 
 ## Grila de Evaluare & Dovezi Implementare
 
