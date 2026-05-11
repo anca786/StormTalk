@@ -1,0 +1,50 @@
+description: "StormTalk AI Evals - Evaluarea calitatii raspunsurilor"
+
+providers:
+  # Utilizam Groq pentru evaluarile locale datorita vitezei
+  # Necesita GROQ_API_KEY in .env.local
+  - id: groq:chat:llama3-8b-8192
+
+prompts:
+  # Prompt 1: Weather Advisor
+  - >
+    Esti Weather Advisor-ul din aplicatia StormTalk.
+    Vremea curenta: Temperatura 2 grade Celsius, ploaie abundenta, vant puternic.
+    Sarcina: 
+    1. Explica vremea
+    2. Da recomandari de haine.
+    Raspunde doar in limba romana, max 50 de cuvinte.
+
+  # Prompt 2: Vacation Finder
+  - >
+    Esti Vacation Finder-ul StormTalk. 
+    Preferinte: "Vreau sa merg undeva la schi in Europa."
+    Sarcina: Ofera o locatie.
+    Raspunde STRICT in format JSON: {"city": "...", "country": "...", "reason": "..."}
+
+tests:
+  - description: "Evaluare Agent: Weather Advisor (Vreme Rece si Ploaie)"
+    options:
+      provider: groq:chat:llama3-8b-8192
+    assert:
+      # Verificam ca AI-ul sugereaza haine groase/impermeabile
+      - type: "icontains"
+        value: "geaca"
+      - type: "icontains"
+        value: "umbrela"
+      # Verificam ca AI-ul vorbeste in romana
+      - type: "is-json"
+        not: true
+      # Verificam ca este destul de concis (sub 500 caractere)
+      - type: "javascript"
+        value: "output.length < 500"
+
+  - description: "Evaluare Agent: Vacation Finder (JSON Output)"
+    options:
+      provider: groq:chat:llama3-8b-8192
+    assert:
+      # Verificam strictetea JSON-ului
+      - type: "is-json"
+      # Verificam ca intelege contextul de schi
+      - type: "javascript"
+        value: "JSON.parse(output).city !== undefined"

@@ -19,7 +19,7 @@ Acest fișier acționează ca un index rapid pentru a facilita verificarea tutur
 | **User stories (minim 10) & backlog creation** | [docs/backlog-refined.md](./docs/backlog-refined.md) (10 User Stories clare sub formă Agile) |
 | **Diagrame (UML, arhitectura, workflowuri)** | [docs/architecture.md](./docs/architecture.md) (Diagrame de Componente, Secvență și ERD vizuale) |
 | **Source control cu git** | Istoricul complet poate fi vizualizat în tab-ul *Commits*. Conține distribuția pe membri. |
-| **Teste automate (inclusiv evals agenți)** | [tests/](./tests/) - include fișiere de testare precum `agents.test.ts` și `weather.test.ts` scrise folosind framework-ul Vitest. |
+| **Teste automate (inclusiv evals agenți)** | Teste unitare: [tests/](./tests/) (Vitest). Evaluări AI (Promptfoo): [docs/report/evals-report.md](./docs/report/evals-report.md) + config: [promptfooconfig.yaml](./promptfooconfig.yaml) |
 | **Raportare bug si rezolvare cu Pull Request** | Raport text detaliat: [docs/report/bug-report.md](./docs/report/bug-report.md) (Asociat PR-ului generat) |
 | **Pipeline CI/CD** | [.github/workflows/ci.yml](./.github/workflows/ci.yml) (Verificare și automatizare teste) |
 | **Raport folosire tooluri AI in dezvoltare** | [docs/report/ai-usage-report.md](./docs/report/ai-usage-report.md) |
