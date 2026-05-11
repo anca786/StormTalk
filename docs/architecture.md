@@ -18,9 +18,9 @@ graph TD
 
     %% Backend API Routes
     subgraph Backend ["Next.js API Routes"]
-        API_Weather["API Vreme (Weather)"]
-        API_Debate["API Agenti Vreme (Debate)"]
-        API_Vacation["API Agenti Vacanta (Vacation)"]
+        API_Weather["API Date Vreme (Weather)"]
+        API_Advisor["API Weather Advisor"]
+        API_Vacation["API Agent Vacanta (Vacation)"]
         API_DB["API Baza de Date (DB)"]
     end
 
@@ -33,13 +33,13 @@ graph TD
 
     %% Connections
     Map <--> API_Weather
-    Map <--> API_Debate
+    Map <--> API_Advisor
     Vacation <--> API_Vacation
     History <--> API_DB
     Profile <--> API_DB
 
     API_Weather --> OpenMeteo
-    API_Debate --> Gemini
+    API_Advisor --> Gemini
     API_Vacation --> Gemini
     API_DB <--> Supabase
 ```
@@ -50,31 +50,31 @@ Diagrama de mai jos prezintă fluxul pas-cu-pas care se întâmplă atunci când
 
 ```mermaid
 sequenceDiagram
-    actor User
+    participant User
     participant Client as Frontend
     participant API as Rute Backend
     participant ExtMeteo as Open-Meteo
     participant ExtLLM as Gemini/Groq
     participant DB as Supabase
 
-    User->>Client: Selecteaza o cerere (Vreme / Vacanta)
+    User->>Client: Cerere UI (Vreme / Vacanta)
     
-    alt Este o cerere de Vreme pe Harta
-        Client->>API: GET Date Meteo (Coordonate)
+    alt Analiza Vreme pe Harta
+        Client->>API: GET Date Meteo
         API->>ExtMeteo: Fetch real-time weather
-        ExtMeteo-->>API: Parametri meteo bruti
-        API-->>Client: Returneaza date meteo
+        ExtMeteo-->>API: Parametri meteo
+        API-->>Client: Date structurate
     end
     
-    Client->>API: Cere analiza AI (Debate / Vacation)
-    API->>ExtLLM: Trimite parametrii + Prompt Agent
-    ExtLLM-->>API: Răspuns inteligent (Fallback automat la Groq in caz de eroare)
-    API-->>Client: Mesaj formatat cu sugestii
+    Client->>API: Cere analiza AI (Advisor / Vacation)
+    API->>ExtLLM: Procesare Agent AI
+    ExtLLM-->>API: Răspuns (Fallback automat in caz de eroare)
+    API-->>Client: Mesaj formatat
 
     Client-->>User: Afișare UI
     
-    Client->>DB: Salvare automata in History
-    DB-->>Client: Confirmare salvare
+    Client->>DB: Salvare in History
+    DB-->>Client: Confirmare
 ```
 
 ## 3. Schema Bazei de Date (Entity-Relationship Diagram)
