@@ -1,68 +1,118 @@
 # Arhitectura StormTalk
 
-## Componente principale
+Acest document prezintă vizual arhitectura sistemului StormTalk, modul de comunicare între componente, fluxul datelor AI și structura bazei de date. Diagramele sunt redate folosind Mermaid (randate automat pe GitHub).
 
-### Frontend
+## 1. Arhitectura de Componente (UML Component Diagram)
 
-- Pagina Home
-- Pagina Harta
-- Pagina Vacation Finder
-- Pagina Favorites
-- Pagina History
-- Pagina Login / Register
-- Pagina Profile
+Această diagramă ilustrează împărțirea logică a aplicației între interfața de utilizator (Frontend), rutele server-side (Backend) și API-urile externe.
 
-### Backend logic
+```mermaid
+graph TD
+    %% Frontend Components
+    subgraph Frontend [Next.js Client Components]
+        Map[Harta Interactiva Leaflet]
+        Vacation[Smart Vacation Finder]
+        Profile[Profil & Autentificare]
+        History[Panou Istoric]
+    end
 
-- `GET /api/weather`
-- `POST /api/debate`
-- `GET /api/favorites`
-- `POST /api/favorites`
-- `GET /api/history`
+    %% Backend API Routes
+    subgraph Backend [Next.js API Routes]
+        API_Weather[/api/weather/]
+        API_Debate[/api/debate/]
+        API_Vacation[/api/vacation/]
+        API_DB[/api/history & /api/favorites]
+    end
 
-### Integrari externe
+    %% External Services
+    subgraph External [Servicii Externe]
+        OpenMeteo((Open-Meteo API))
+        Gemini((Gemini / Groq AI))
+        Supabase[(Supabase PostgreSQL)]
+    end
 
-- Open-Meteo pentru date meteo
-- Gemini API pentru generarea dezbaterii
-- Supabase pentru stocarea datelor utilizatorului
+    %% Connections
+    Map <--> API_Weather
+    Map <--> API_Debate
+    Vacation <--> API_Vacation
+    History <--> API_DB
+    Profile <--> API_DB
 
-## Agenti AI
+    API_Weather --> OpenMeteo
+    API_Debate --> Gemini
+    API_Vacation --> Gemini
+    API_DB <--> Supabase
+```
 
-### Meteorologul
+## 2. Fluxul de Execuție AI (Sequence Diagram)
 
-- stil tehnic
-- explica temperaturi, vant, precipitatii, presiune, umiditate
-- mentioneaza eventuale riscuri
+Diagrama de mai jos prezintă fluxul pas-cu-pas care se întâmplă atunci când un utilizator selectează un punct pe hartă: de la obținerea coordonatelor, extragerea datelor meteo, până la dezbaterea generată de agenții AI.
 
-### Localnicul
+```mermaid
+sequenceDiagram
+    actor User
+    participant Client as Frontend (Map)
+    participant Weather as API /weather
+    participant AI as API /debate
+    participant ExtMeteo as Open-Meteo
+    participant ExtLLM as Gemini/Groq
+    participant DB as Supabase
 
-- stil colocvial
-- traduce vremea in experienta umana
-- da recomandari practice si de context local
+    User->>Client: Click pe coordonate (Lat, Lng)
+    Client->>Weather: GET /api/weather?lat=...&lng=...
+    Weather->>ExtMeteo: Fetch real-time weather
+    ExtMeteo-->>Weather: Return temperature, wind, etc.
+    Weather-->>Client: Date meteo brute
+    
+    Client->>AI: POST /api/debate (Weather Payload)
+    AI->>ExtLLM: Prompt complex (Agent 1 + Agent 2)
+    ExtLLM-->>AI: Răspuns dezbatere (Meteorolog vs Localnic)
+    AI-->>Client: Mesaj formatat
 
-## Persistenta datelor
+    Client-->>User: Afișare UI (Date + Chat AI)
+    
+    Client->>DB: POST /api/history (Salvare conversație)
+    DB-->>Client: Confirmare salvare
+```
 
-### `profiles`
+## 3. Schema Bazei de Date (Entity-Relationship Diagram)
 
-- user_id
-- display_name
-- preferred_unit
+Baza de date relațională este găzduită pe Supabase și gestionează utilizatorii, setările acestora, istoricul conversațiilor AI și destinațiile favorite.
 
-### `favorites`
+```mermaid
+erDiagram
+    USERS ||--o| PROFILES : "are"
+    USERS ||--o{ FAVORITES : "salveaza"
+    USERS ||--o{ HISTORY : "genereaza"
 
-- id
-- user_id
-- latitude
-- longitude
-- label
-- created_at
+    USERS {
+        uuid id PK
+        string email
+        string encrypted_password
+    }
 
-### `history`
+    PROFILES {
+        uuid user_id PK, FK
+        string display_name
+        string preferred_unit "celsius/fahrenheit"
+    }
 
-- id
-- user_id
-- latitude
-- longitude
-- weather_payload
-- ai_conversation
-- created_at
+    FAVORITES {
+        uuid id PK
+        uuid user_id FK
+        float latitude
+        float longitude
+        string label
+        timestamp created_at
+    }
+
+    HISTORY {
+        uuid id PK
+        uuid user_id FK
+        float latitude
+        float longitude
+        jsonb weather_payload
+        jsonb ai_conversation
+        timestamp created_at
+    }
+```
