@@ -418,8 +418,6 @@ export default function StormMapClient() {
     try {
       const payload = await fetchAdvisor(weather);
       setAdvisorMessage(payload.message ?? null);
-      setAdvisorMode(payload.mode ?? null);
-      setAdvisorWarning(payload.warning ?? null);
     } catch (error) {
       setAdvisorError(
         error instanceof Error
