@@ -248,9 +248,7 @@ export async function generateIntelligentReply(prompt: string): Promise<{ text: 
   }
 }
 
-// Legacy exports for backward compatibility
-export const buildMeteorologistPrompt = buildWeatherAdvisorPrompt;
-export const buildLocalPrompt = buildWeatherAdvisorPrompt;
+// Legacy fallback export
 export type DebateAgentReply = AgentReply;
 export function buildFallbackDebate(context: WeatherContext): AgentReply[] {
   return [{ role: "advisor", message: buildWeatherAdvisorFallback(context) }];

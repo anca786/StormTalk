@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  buildLocalPrompt,
-  buildMeteorologistPrompt,
+  buildWeatherAdvisorPrompt,
+  buildVacationFinderPrompt,
   type WeatherContext,
 } from "../lib/agents";
 
@@ -24,21 +24,23 @@ const weatherContext: WeatherContext = {
 };
 
 describe("agent prompts", () => {
-  it("builds the meteorologist prompt in romanian with weather values", () => {
-    const prompt = buildMeteorologistPrompt(weatherContext);
+  it("builds the weather advisor prompt with accurate weather context", () => {
+    const prompt = buildWeatherAdvisorPrompt(weatherContext);
 
-    expect(prompt).toContain("Esti Meteorologul");
+    expect(prompt).toContain("Esti Weather Advisor-ul din aplicatia StormTalk");
     expect(prompt).toContain("Raspunzi doar in limba romana");
     expect(prompt).toContain("temperature_2m: 18.4");
     expect(prompt).toContain("wind_speed_10m: 16.7");
   });
 
-  it("builds the local prompt in romanian with practical guidance context", () => {
-    const prompt = buildLocalPrompt(weatherContext);
+  it("builds the vacation finder prompt with preferences", () => {
+    const prompt = buildVacationFinderPrompt({
+      description: "Vreau sa merg undeva la caldura, pe o plaja superba.",
+    });
 
-    expect(prompt).toContain("Esti Localnicul");
-    expect(prompt).toContain("Vorbeste natural si practic");
-    expect(prompt).toContain("pressure_msl: 1015.2");
-    expect(prompt).toContain("Coordonate: 44.4268, 26.1025");
+    expect(prompt).toContain("Esti Vacation Finder-ul din aplicatia StormTalk");
+    expect(prompt).toContain("Vreau sa merg undeva la caldura");
+    expect(prompt).toContain("Raspunde STRICT in format JSON");
+    expect(prompt).toContain("Perioada: flexibila");
   });
 });
